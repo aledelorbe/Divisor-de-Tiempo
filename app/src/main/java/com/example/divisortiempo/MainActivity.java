@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NotificationManager notificationManager;
     MediaPlayer mediaPlayer;
     TextView minutosRestantes;
+    boolean isTimerRunning = false;
+    boolean isTimerRunning2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
 
         comenzarButton.setOnClickListener(this);
-
-
-        /*
-        detenerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timer.cancel();
-                notificationManager.cancelAll();
-                mediaPlayer.stop();
-            }
-        });
-        */
-
-
-
-
+        detenerButton.setOnClickListener(this);
     }
 
     @Override
@@ -67,17 +54,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bloques = Integer.parseInt(bloquesEditText.getText().toString());
             intervaloOriginal = intervalo = tiempo / bloques;
 
+            temporizador1();
+            temporizador2();
+        }
+        else if( view.getId() == R.id.detenerButton ){
+            timer.cancel();
+            timer2.cancel();
+            notificationManager.cancelAll();
+            mediaPlayer.stop();
+        }
+    }
 
-            /*
+    public void temporizador1(){
+        if( isTimerRunning )
+            timer.cancel();
+        else {
             timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    mostrarNotificacion();
                     reproducirAlarma();
                 }
-            }, intervaloOriginal * 60 * 1000, intervaloOriginal * 60 * 1000);*/
+            }, intervaloOriginal * 60 * 1000, intervaloOriginal * 60 * 1000);
+            // Para que suene cada intervaloOriginal minutos, a partir de que termina el primer
+            // bloque de tiempo.
 
+            isTimerRunning = true;
+        }
+    }
+
+    public void temporizador2(){
+        if( isTimerRunning2 )
+            timer2.cancel();
+        else {
             timer2 = new Timer();
             timer2.schedule(new TimerTask() {
                 @Override
@@ -87,23 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }, 0, 60 * 1000);
             // Para que cambie cada 60 segundos (1 minuto), a partir del instante que
             // se mande a llamar el timer.
-        }
-        else if( view.getId() == R.id.comenzarButton ){
-            timer.cancel();
-            timer2.cancel();
-            notificationManager.cancelAll();
-            mediaPlayer.stop();
-        }
-    }
 
-    private void mostrarNotificacion() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Bloque completado")
-                .setContentText("¡Un bloque de " + intervalo + " minutos ha sido completado!")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        notificationManager.notify(1, builder.build());
+            isTimerRunning2 = true;
+        }
     }
 
     private void reproducirAlarma() {
