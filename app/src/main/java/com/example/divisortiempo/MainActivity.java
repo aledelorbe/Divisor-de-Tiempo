@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText tiempoEditText, bloquesEditText;
     Button comenzarButton, detenerButton;
-    int tiempo, bloques, intervalo;
+    int tiempo, bloques, intervalo, intervaloOriginal;
 
     Timer timer, timer2;
     NotificationManager notificationManager;
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tiempoEditText = findViewById(R.id.tiempoEditText);
         bloquesEditText = findViewById(R.id.bloquesEditText);
         comenzarButton = findViewById(R.id.comenzarButton);
+        detenerButton = findViewById(R.id.detenerButton);
         minutosRestantes = findViewById(R.id.minutosRestantes);
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -64,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if( view.getId() == R.id.comenzarButton ){
             tiempo = Integer.parseInt(tiempoEditText.getText().toString());
             bloques = Integer.parseInt(bloquesEditText.getText().toString());
-            intervalo = tiempo / bloques;
+            intervaloOriginal = intervalo = tiempo / bloques;
+
 
             /*
             timer = new Timer();
@@ -74,18 +76,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mostrarNotificacion();
                     reproducirAlarma();
                 }
-            }, 0, intervalo * 60 * 1000);*/
+            }, intervaloOriginal * 60 * 1000, intervaloOriginal * 60 * 1000);*/
 
-            minutosRestantes.setText( intervalo );
-            /*
             timer2 = new Timer();
             timer2.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    minutosRestantes.setText( intervalo );
-                    //mostrarTiempoRestante();
+                    tiempoRestante();
                 }
-            }, 0, 60 * 1000);*/
+            }, 0, 60 * 1000);
+            // Para que cambie cada 60 segundos (1 minuto), a partir del instante que
+            // se mande a llamar el timer.
+        }
+        else if( view.getId() == R.id.comenzarButton ){
+            timer.cancel();
+            timer2.cancel();
+            notificationManager.cancelAll();
+            mediaPlayer.stop();
         }
     }
 
@@ -103,10 +110,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer.start();
     }
 
-    /*
-    private void mostrarTiempoRestante() {
-        minutosRestantes.setText( intervalo - 1 );
-    }*/
-
-
+    public void tiempoRestante() {
+        minutosRestantes.setText( " " + (intervalo--) );
+        if( intervalo == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
+            intervalo = intervaloOriginal;
+    }
 }
