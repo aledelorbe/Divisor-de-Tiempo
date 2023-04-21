@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         detenerButton = findViewById(R.id.detenerButton);
         minutosRestantes = findViewById(R.id.minutosRestantes);
 
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
 
         comenzarButton.setOnClickListener(this);
@@ -58,9 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             temporizador2();
         }
         else if( view.getId() == R.id.detenerButton ){
-            timer.cancel();
-            timer2.cancel();
-            notificationManager.cancelAll();
+            /*timer.cancel();
+            timer2.cancel();*/
             mediaPlayer.stop();
         }
     }
