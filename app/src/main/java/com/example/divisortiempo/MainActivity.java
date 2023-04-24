@@ -14,12 +14,12 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText tiempoEditText, bloquesEditText, txtBloques;
+    EditText tiempoEditText, bloquesEditText;
     Button comenzarButton, detenerButton;
     int tiempo, bloques, intervalo, intervaloOriginal, contadorBloques = 0, intervaloSeg;
     Timer timer, timer2, timer3;
     MediaPlayer mediaPlayer;
-    TextView minutosRestantes, segundosRestantes;
+    TextView minutosRestantes, segundosRestantes, txtBloques;
     boolean isTimerRunning = false, isTimerRunning2 = false, isTimerRunning3 = false;
 
     @Override
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         detenerButton = findViewById(R.id.detenerButton);
         minutosRestantes = findViewById(R.id.minutosRestantes);
         segundosRestantes = findViewById(R.id.segundosRestantes);
+        txtBloques = findViewById(R.id.txtBloques);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
 
@@ -71,7 +72,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     reproducirAlarma();
-                    imprimirBloqueTerminado();
+
+
+                    contadorBloques++;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            txtBloques.append("¡El bloque de tiempo " + (contadorBloques) + " ha terminado!\n");
+                        }
+                    });
                 }
             }, intervaloOriginal * 60 * 1000, intervaloOriginal * 60 * 1000);
             // Para que suene cada intervaloOriginal minutos, a partir de que termina el primer
@@ -138,7 +147,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
     }
 
+    /*
+
     public void imprimirBloqueTerminado() {
         txtBloques.append("¡El bloque de tiempo " + (++contadorBloques) + " ha terminado!\n");
-    }
+    }*/
 }
