@@ -1,10 +1,7 @@
 package com.example.divisortiempo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -17,16 +14,13 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText tiempoEditText, bloquesEditText;
+    EditText tiempoEditText, bloquesEditText, txtBloques;
     Button comenzarButton, detenerButton;
-    int tiempo, bloques, intervalo, intervaloOriginal;
-
-    Timer timer, timer2;
-    NotificationManager notificationManager;
+    int tiempo, bloques, intervalo, intervaloOriginal, contadorBloques = 0, intervaloSeg;
+    Timer timer, timer2, timer3;
     MediaPlayer mediaPlayer;
-    TextView minutosRestantes;
-    boolean isTimerRunning = false;
-    boolean isTimerRunning2 = false;
+    TextView minutosRestantes, segundosRestantes;
+    boolean isTimerRunning = false, isTimerRunning2 = false, isTimerRunning3 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         comenzarButton = findViewById(R.id.comenzarButton);
         detenerButton = findViewById(R.id.detenerButton);
         minutosRestantes = findViewById(R.id.minutosRestantes);
+        segundosRestantes = findViewById(R.id.segundosRestantes);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
 
@@ -52,18 +47,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tiempo = Integer.parseInt(tiempoEditText.getText().toString());
             bloques = Integer.parseInt(bloquesEditText.getText().toString());
             intervaloOriginal = intervalo = tiempo / bloques;
+            intervaloSeg = 59;
 
-            temporizador1();
-            temporizador2();
+            temporizadorBloques();
+            temporizadorMinutos();
+            //temporizadorSegundos();
         }
         else if( view.getId() == R.id.detenerButton ){
-            /*timer.cancel();
-            timer2.cancel();*/
             mediaPlayer.stop();
-        }
+        }/* else if ( view.getId() == R.id.reiniciarButton) {
+
+        }*/
     }
 
-    public void temporizador1(){
+    // Cada que termine un bloque sonara la alarma y se imprimira el texto
+    // de bloque numero i terminado.
+    public void temporizadorBloques(){
         if( isTimerRunning )
             timer.cancel();
         else {
@@ -72,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     reproducirAlarma();
+                    imprimirBloqueTerminado();
                 }
             }, intervaloOriginal * 60 * 1000, intervaloOriginal * 60 * 1000);
             // Para que suene cada intervaloOriginal minutos, a partir de que termina el primer
@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void temporizador2(){
+    // Cada que pase un minuto, imprimira el nuevo minuto restante.
+    public void temporizadorMinutos(){
         if( isTimerRunning2 )
             timer2.cancel();
         else {
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             timer2.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    tiempoRestante();
+                    tiempoMinRestante();
                 }
             }, 0, 60 * 1000);
             // Para que cambie cada 60 segundos (1 minuto), a partir del instante que
@@ -99,13 +100,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Cada que pase un segundo, imprimira el nuevo segundo restante.
+    public void temporizadorSegundos(){
+        if( isTimerRunning3 )
+            timer3.cancel();
+        else {
+            timer3 = new Timer();
+            timer3.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    tiempoSegRestante();
+                }
+            }, 0, 1000);
+            // Para que cambie cada 1 segundo, a partir del instante que
+            // se mande a llamar el timer.
+
+            isTimerRunning3 = true;
+        }
+    }
+
     private void reproducirAlarma() {
         mediaPlayer.start();
     }
 
-    public void tiempoRestante() {
+    public void tiempoMinRestante() {
         minutosRestantes.setText( " " + (intervalo--) );
         if( intervalo == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
             intervalo = intervaloOriginal;
+    }
+
+    public void tiempoSegRestante() {
+        segundosRestantes.setText( " " + (intervaloSeg--) );
+        /*
+        if( intervaloSeg == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
+            intervaloSeg = 59;
+
+         */
+    }
+
+    public void imprimirBloqueTerminado() {
+        txtBloques.append("¡El bloque de tiempo " + (++contadorBloques) + " ha terminado!\n");
     }
 }

@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="55dp"
         android:layout_marginTop="30dp"
         android:text="DIVISOR DE TIEMPO"
         android:textColor="@color/white"
@@ -107,7 +107,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="91dp"
+        android:layout_height="68dp"
         android:layout_marginTop="40dp"
         android:background="#1E1818"
         android:orientation="horizontal">
@@ -116,10 +116,10 @@
             android:id="@+id/minutosRestantes"
             android:layout_width="29dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="130dp"
+            android:layout_marginLeft="40dp"
             android:text=" "
             android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:textSize="25sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -127,6 +127,33 @@
             android:layout_marginLeft="10dp"
             android:text="Minutos"
             android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/segundosRestantes"
+            android:layout_width="29dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text=" "
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Segundos"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtBloques"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:textColor="@color/white"
+        android:textSize="23sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="85dp"/>
 </LinearLayout >
