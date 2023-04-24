@@ -15,7 +15,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText tiempoEditText, bloquesEditText;
-    Button comenzarButton, detenerButton;
+    Button comenzarButton, detenerButton, reiniciarButton;
     int tiempo, bloques, intervalo, intervaloOriginal, contadorBloques = 0, intervaloSeg;
     Timer timer, timer2, timer3;
     MediaPlayer mediaPlayer;
@@ -27,10 +27,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Edit Text
         tiempoEditText = findViewById(R.id.tiempoEditText);
         bloquesEditText = findViewById(R.id.bloquesEditText);
+        // Buttones
         comenzarButton = findViewById(R.id.comenzarButton);
         detenerButton = findViewById(R.id.detenerButton);
+        reiniciarButton = findViewById(R.id.reiniciarButton);
+
+        // Text View
         minutosRestantes = findViewById(R.id.minutosRestantes);
         segundosRestantes = findViewById(R.id.segundosRestantes);
         txtBloques = findViewById(R.id.txtBloques);
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         comenzarButton.setOnClickListener(this);
         detenerButton.setOnClickListener(this);
+        reiniciarButton.setOnClickListener(this);
     }
 
     @Override
@@ -48,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tiempo = Integer.parseInt(tiempoEditText.getText().toString());
             bloques = Integer.parseInt(bloquesEditText.getText().toString());
             intervaloOriginal = intervalo = tiempo / bloques;
-            intervaloSeg = 59;
+            //intervaloSeg = 59;
+
+            //segundosRestantes.setText( " " + (intervaloSeg) );
 
             temporizadorBloques();
             temporizadorMinutos();
@@ -56,8 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if( view.getId() == R.id.detenerButton ){
             mediaPlayer.stop();
-        }/* else if ( view.getId() == R.id.reiniciarButton) {
-
+        } /*else if ( view.getId() == R.id.reiniciarButton) {
+            finalizarTimers();
+            reiniciarApp();
         }*/
     }
 
@@ -140,16 +149,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void tiempoSegRestante() {
         segundosRestantes.setText( " " + (intervaloSeg--) );
-        /*
         if( intervaloSeg == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
             intervaloSeg = 59;
-
-         */
     }
 
-    /*
-
-    public void imprimirBloqueTerminado() {
-        txtBloques.append("¡El bloque de tiempo " + (++contadorBloques) + " ha terminado!\n");
-    }*/
 }

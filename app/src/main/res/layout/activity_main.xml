@@ -81,7 +81,7 @@
             android:id="@+id/comenzarButton"
             android:layout_width="114dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:backgroundTint="#4F52B2"
             android:text="Iniciar"></Button>
@@ -90,10 +90,19 @@
             android:id="@+id/detenerButton"
             android:layout_width="114dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:backgroundTint="#4F52B2"
             android:text="Detener"></Button>
+
+        <Button
+            android:id="@+id/reiniciarButton"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#4F52B2"
+            android:text="Reiniciar"></Button>
     </LinearLayout>
 
     <TextView
@@ -116,23 +125,6 @@
             android:id="@+id/minutosRestantes"
             android:layout_width="29dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text=" "
-            android:textColor="@color/white"
-            android:textSize="25sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Minutos"
-            android:textColor="@color/white"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/segundosRestantes"
-            android:layout_width="29dp"
-            android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:text=" "
             android:textColor="@color/white"
@@ -142,6 +134,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:text="Minutos :"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/segundosRestantes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text=" "
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
             android:text="Segundos"
             android:textColor="@color/white"
             android:textSize="25sp" />
@@ -151,9 +161,9 @@
         android:id="@+id/txtBloques"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" "
+        android:text=""
         android:textColor="@color/white"
-        android:textSize="23sp"
+        android:textSize="20sp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="45dp"/>
+        android:layout_marginLeft="20dp"/>
 </LinearLayout >
