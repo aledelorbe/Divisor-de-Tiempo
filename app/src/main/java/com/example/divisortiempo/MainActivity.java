@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText edtTxtTiempo, edtTxtBloques;
     Button btnComenzar, btnDetener, btnReiniciar;
-    int tiempo, bloques, intervalo, intervaloOriginal, contadorBloques = 0, intervaloSeg = 0;
+    int tiempo, bloques, intervaloMin, intervaloOriginal, contadorBloques = 0, intervaloSeg = 0;
     Timer timer, timer2, timer3;
     MediaPlayer mediaPlayer;
     TextView txtMinutosRestantes, txtSegundosRestantes, txtBloques;
@@ -49,10 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if( view.getId() == R.id.comenzarButton ){
             tiempo = Integer.parseInt(edtTxtTiempo.getText().toString());
             bloques = Integer.parseInt(edtTxtBloques.getText().toString());
-            intervaloOriginal = intervalo = tiempo / bloques;
+            intervaloOriginal = intervaloMin = tiempo / bloques;
             intervaloSeg = 59;
 
-            temporizadorBloques();
             temporizadorMinutos();
             temporizadorSegundos();
         }
@@ -64,34 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }*/
     }
 
-    // Cada que termine un bloque sonara la alarma y se imprimira el texto
-    // de bloque numero i terminado.
-    public void temporizadorBloques(){
-        if( isTimerRunning )
-            timer.cancel();
-        else {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    reproducirAlarma();
-
-
-                    contadorBloques++;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            txtBloques.append("¡El bloque de tiempo " + (contadorBloques) + " ha terminado!\n");
-                        }
-                    });
-                }
-            }, intervaloOriginal * 60 * 1000, intervaloOriginal * 60 * 1000);
-            // Para que suene cada intervaloOriginal minutos, a partir de que termina el primer
-            // bloque de tiempo.
-
-            isTimerRunning = true;
-        }
-    }
 
     // Cada que pase un minuto, imprimira el nuevo minuto restante.
     public void temporizadorMinutos(){
@@ -102,10 +73,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             timer2.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    tiempoMinRestante();
+                    intervaloMin--;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            txtMinutosRestantes.setText(" " + (intervaloMin));
+                        }
+                    });
+                    if( intervaloMin == -1 )
+                        intervaloMin = intervaloOriginal;
                 }
-            }, 0, 60 * 1000);
-            // Para que cambie cada 60 segundos (1 minuto), a partir del instante que
+            }, 0, 60*1000);
+            // Para que cambie cada 60 segundos (un minuto), a partir del instante que
             // se mande a llamar el timer.
 
             isTimerRunning2 = true;
@@ -126,10 +105,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             txtSegundosRestantes.setText(" " + (intervaloSeg));
+
+                            if ( intervaloMin == 0 && intervaloSeg == 0)
+                            {
+                                txtBloques.append("¡El bloque de tiempo " + (contadorBloques) + " ha terminado!\n");
+                            }
                         }
                     });
                     if( intervaloSeg == -1 )
                         intervaloSeg = 59;
+                    else if ( intervaloMin == 0 && intervaloSeg == 1)
+                    {
+                        contadorBloques++;
+                    }
+                    else if ( intervaloMin == 0 && intervaloSeg == 0)
+                    {
+                        reproducirAlarma();
+                    }
                 }
             }, 0, 1000);
             // Para que cambie cada 1 segundo, a partir del instante que
@@ -144,9 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void tiempoMinRestante() {
-        txtMinutosRestantes.setText( " " + (intervalo--) );
-        if( intervalo == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
-            intervalo = intervaloOriginal;
+        txtMinutosRestantes.setText( " " + (intervaloMin--) );
+        if( intervaloMin == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
+            intervaloMin = intervaloOriginal;
     }
 
     public void tiempoSegRestante() {
