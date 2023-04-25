@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Cada que pase un segundo, imprimira el nuevo segundo restante.
     public void temporizadorSegundos(){
         if(isTimerRunning1)
-            timer1.cancel();
+            Toast.makeText(getApplicationContext(), "Ya ha un divisor de tiempo programado. Reinicie la app si desea programar otro.", Toast.LENGTH_LONG).show();
         else {
             timer1 = new Timer();
             timer1.schedule(new TimerTask() {
@@ -83,6 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             if ( intervaloMin == 0 && intervaloSeg == 0)
                             {
                                 txtBloques.append("¡El bloque de tiempo " + (contadorBloques) + " ha terminado!\n");
+                            }
+
+                            if ( contadorBloques == bloques )
+                            {
+                                txtBloques.append("¡Se ha terminado el divisor de tiempo!");
                             }
                         }
                     });
@@ -101,12 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     {
                         reproducirAlarma();
                         intervaloSeg = intervaloSegOrigi;
-                    }
-
-                    if( intervaloMin == -1 )
-                    {
                         intervaloMin = intervaloMinOrigi;
-
                     }
                 }
             }, 0, 1000);
