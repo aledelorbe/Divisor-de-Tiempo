@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText edtTxtTiempo, edtTxtBloques;
     Button btnComenzar, btnDetener, btnReiniciar;
-    int tiempo, bloques, intervalo, intervaloOriginal, contadorBloques = 0, intervaloSeg;
+    int tiempo, bloques, intervalo, intervaloOriginal, contadorBloques = 0, intervaloSeg = 0;
     Timer timer, timer2, timer3;
     MediaPlayer mediaPlayer;
     TextView txtMinutosRestantes, txtSegundosRestantes, txtBloques;
@@ -50,13 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tiempo = Integer.parseInt(edtTxtTiempo.getText().toString());
             bloques = Integer.parseInt(edtTxtBloques.getText().toString());
             intervaloOriginal = intervalo = tiempo / bloques;
-            //intervaloSeg = 59;
-
-            //segundosRestantes.setText( " " + (intervaloSeg) );
+            intervaloSeg = 59;
 
             temporizadorBloques();
             temporizadorMinutos();
-            //temporizadorSegundos();
+            temporizadorSegundos();
         }
         else if( view.getId() == R.id.detenerButton ){
             mediaPlayer.stop();
@@ -123,7 +121,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             timer3.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    tiempoSegRestante();
+                    intervaloSeg--;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            txtSegundosRestantes.setText(" " + (intervaloSeg));
+                        }
+                    });
+                    if( intervaloSeg == -1 )
+                        intervaloSeg = 59;
                 }
             }, 0, 1000);
             // Para que cambie cada 1 segundo, a partir del instante que
