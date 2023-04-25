@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Timer timer1;
     MediaPlayer mediaPlayer;
     TextView txtMinutosRestantes, txtSegundosRestantes, txtBloques;
-    boolean isTimerRunning1 = false;
+    boolean isTimerRunning1 = false, banderaFin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,33 +85,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             {
                                 txtBloques.append("¡El bloque de tiempo " + (contadorBloques) + " ha terminado!\n");
 
-                                if ( contadorBloques == bloques )
-                                {
-                                    txtBloques.append("¡Se ha terminado el divisor de tiempo!");
-                                }
+
+                            }
+
+                            if ( contadorBloques == bloques )
+                            {
+                                txtBloques.append("¡Se ha terminado el divisor de tiempo!");
                             }
                         }
                     });
                     intervaloSeg--;
 
-                    if( intervaloSeg == -1 && intervaloMin != 0)
+                    if( banderaFin )
+                    {
+                        this.cancel();
+                    }
+                    else if( intervaloSeg == -1 && intervaloMin != 0)
                     {
                         intervaloSeg = 59;
                         intervaloMin--;
                     }
-                    else if ( intervaloMin == 0 && intervaloSeg == 1)
-                    {
-                        contadorBloques++;
-                    }
+
                     else if ( intervaloMin == 0 && intervaloSeg == 0)
                     {
                         reproducirAlarma();
                         intervaloSeg = intervaloSegOrigi;
                         intervaloMin = intervaloMinOrigi;
+                    }
+
+                    if ( intervaloMin == 0 && intervaloSeg == 1)
+                    {
+                        contadorBloques++;
 
                         if ( contadorBloques == bloques )
                         {
-                            this.cancel();
+                            //this.cancel();
+                            banderaFin = true;
                         }
                     }
                 }
