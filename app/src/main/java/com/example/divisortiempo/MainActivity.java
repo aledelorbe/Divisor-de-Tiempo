@@ -17,11 +17,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText edtTxtTiempo, edtTxtBloques;
     Button btnComenzar, btnDetener, btnReiniciar;
-    int tiempo, bloques, intervaloMin, intervaloOriginal, contadorBloques = 0, intervaloSeg = 0;
-    Timer timer, timer2, timer3;
+    int tiempo, bloques, intervaloMin, intervaloMinOrigi, intervaloSegOrigi, contadorBloques = 0, intervaloSeg = 0;
+    Timer timer1;
     MediaPlayer mediaPlayer;
     TextView txtMinutosRestantes, txtSegundosRestantes, txtBloques;
-    boolean isTimerRunning2 = false, isTimerRunning3 = false;
+    boolean isTimerRunning1 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if( view.getId() == R.id.comenzarButton ){
             tiempo = Integer.parseInt(edtTxtTiempo.getText().toString());
             bloques = Integer.parseInt(edtTxtBloques.getText().toString());
-            intervaloOriginal = intervaloMin = tiempo / bloques;
+            intervaloMinOrigi = intervaloMin = tiempo / bloques;
 
             calcularSegundos();
 
@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Cada que pase un segundo, imprimira el nuevo segundo restante.
     public void temporizadorSegundos(){
-        if( isTimerRunning3 )
-            timer3.cancel();
+        if(isTimerRunning1)
+            timer1.cancel();
         else {
-            timer3 = new Timer();
-            timer3.schedule(new TimerTask() {
+            timer1 = new Timer();
+            timer1.schedule(new TimerTask() {
                 @Override
                 public void run() {
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     });
                     intervaloSeg--;
 
-                    if( intervaloSeg == -1 )
+                    if( intervaloSeg == -1 && intervaloMin != 0)
                     {
                         intervaloSeg = 59;
                         intervaloMin--;
@@ -100,33 +100,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else if ( intervaloMin == 0 && intervaloSeg == 0)
                     {
                         reproducirAlarma();
+                        intervaloSeg = intervaloSegOrigi;
                     }
 
                     if( intervaloMin == -1 )
-                        intervaloMin = intervaloOriginal;
+                    {
+                        intervaloMin = intervaloMinOrigi;
+
+                    }
                 }
             }, 0, 1000);
             // Para que cambie cada 1 segundo, a partir del instante que
             // se mande a llamar el timer.
 
-            isTimerRunning3 = true;
+            isTimerRunning1 = true;
         }
     }
 
     private void reproducirAlarma() {
         mediaPlayer.start();
-    }
-
-
-
-    public void tiempoSegRestante() {
-        txtSegundosRestantes.setText( " " + (intervaloSeg--) );
-        if( intervaloSeg == -1 )
-            intervaloSeg = 59;
-
-        txtMinutosRestantes.setText( " " + (intervaloMin--) );
-        if( intervaloMin == -1 ) // Porque cuando llegue al minuto 0, todavia quedarian 60 segundos mas.
-            intervaloMin = intervaloOriginal;
     }
 
     public void calcularSegundos() {
@@ -147,15 +139,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             int decimalesInt = Integer.parseInt(decimales);
-            intervaloSeg = decimalesInt * 60 / 100;
+            intervaloSegOrigi = intervaloSeg = decimalesInt * 60 / 100;
         }
 
         System.out.println("intervaloSeg = " + intervaloSeg);
     }
 
     public void finalizarTimers(){
-        timer2.cancel();
-        timer3.cancel();
+        timer1.cancel();
     }
 
     public void reiniciarApp(){
