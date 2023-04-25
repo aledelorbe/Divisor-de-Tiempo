@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bloques = Integer.parseInt(edtTxtBloques.getText().toString());
             intervaloMinOrigi = intervaloMin = tiempo / bloques;
 
-            calcularSegundos();
-
             temporizadorSegundos();
         }
         else if( view.getId() == R.id.detenerButton ){
@@ -70,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(isTimerRunning1)
             Toast.makeText(getApplicationContext(), "Ya ha un divisor de tiempo programado. Reinicie la app si desea programar otro.", Toast.LENGTH_LONG).show();
         else {
+            calcularSegundos();
+
             timer1 = new Timer();
             timer1.schedule(new TimerTask() {
                 @Override
@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             if ( intervaloMin == 0 && intervaloSeg == 0)
                             {
                                 txtBloques.append("¡El bloque de tiempo " + (contadorBloques) + " ha terminado!\n");
-                            }
 
-                            if ( contadorBloques == bloques )
-                            {
-                                txtBloques.append("¡Se ha terminado el divisor de tiempo!");
+                                if ( contadorBloques == bloques )
+                                {
+                                    txtBloques.append("¡Se ha terminado el divisor de tiempo!");
+                                }
                             }
                         }
                     });
@@ -108,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         reproducirAlarma();
                         intervaloSeg = intervaloSegOrigi;
                         intervaloMin = intervaloMinOrigi;
+
+                        if ( contadorBloques == bloques )
+                        {
+                            this.cancel();
+                        }
                     }
                 }
             }, 0, 1000);
