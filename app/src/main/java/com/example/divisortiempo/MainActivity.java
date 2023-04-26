@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if( view.getId() == R.id.detenerButton ){
             // Detendra la reproduccion de la alarma.
             mediaPlayer.stop();
+            mediaPlayer = MediaPlayer.create(this, R.raw.alarm); // Si al detener la alarma, no se volvia a preparar, ya no volvia a sonar. ****
         }
         // Comportamiento del boton reniciar
         else if ( view.getId() == R.id.reiniciarButton) {
@@ -129,10 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // Si los minutos valen 0 y los segundos tambien, quiere
                     // decir que un bloque de tiempo ya termino, por lo que debe hacerse sonar
                     // la alarma.
-                    else if ( intervaloMin == 0 && intervaloSeg == 0)
+                    else if ( intervaloMin == 0 && intervaloSeg == 1)
                     {
                         reproducirAlarma();
                     }
+
                     // Si los minutos valen 0 y los segundos -1, volver a comenzar un bloque
                     // de tiempo, asignandoles a los segundo y minutos los valores originales
                     else if( intervaloMin == 0 && intervaloSeg == -1 )
@@ -193,7 +195,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String decimalesAux;
             if (decimales.length() == 1) {
                 decimalesAux = decimales + "0";
-            } else {
+            }
+            // En caso contrario, solo quedarse con los dos primeros digitos despues del pto.
+            else {
                 decimalesAux = decimales.substring(0, 2);
             }
             System.out.println("decimalesAux = " + decimalesAux);
