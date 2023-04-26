@@ -190,12 +190,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Si la longitud de ese valor es 1, entonces hay que concatenarle un
             // 0. Porque si por ejemplo el valor es 5, en realidad debe valer 50 para la
             // realizar la conversion a segundos.
+            String decimalesAux;
             if (decimales.length() == 1) {
-                decimales += "0";
+                decimalesAux = decimales + "0";
+            } else {
+                decimalesAux = decimales.substring(0, 2);
             }
+            System.out.println("decimalesAux = " + decimalesAux);
 
             // Realizar la conversion de ese valor a segundos.
-            int decimalesInt = Integer.parseInt(decimales);
+            int decimalesInt = Integer.parseInt(decimalesAux);
             intervaloSegOrigi = intervaloSeg = decimalesInt * 60 / 100;
         }
 
