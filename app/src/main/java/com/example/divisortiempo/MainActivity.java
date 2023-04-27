@@ -52,15 +52,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Comportamiento del boton comenzar
         if( view.getId() == R.id.comenzarButton ){
-            // Extraccion de los datos ingresados por el usuario: minutos y bloques.
-            tiempo = Integer.parseInt(edtTxtTiempo.getText().toString());
-            bloques = Integer.parseInt(edtTxtBloques.getText().toString());
+            String tiempoString = edtTxtTiempo.getText().toString();
+            String bloquesString = edtTxtBloques.getText().toString();
 
-            // Determinar cuantos minutos* dura un bloque de tiempo.
-            intervaloMinOrigi = intervaloMin = tiempo / bloques;
+            // Si el usuario llenos los campos de tiempo y bloques entonces...
+            if( !tiempoString.isEmpty() && !bloquesString.isEmpty() )
+            {
+                // Extraccion de los datos ingresados por el usuario: minutos y bloques.
+                tiempo = Integer.parseInt(tiempoString);
+                bloques = Integer.parseInt(bloquesString);
 
-            // Mandar a llamar el metodo temporizadorSegundos.
-            temporizadorSegundos();
+                // Determinar cuantos minutos* dura un bloque de tiempo.
+                intervaloMinOrigi = intervaloMin = tiempo / bloques;
+
+                // Mandar a llamar el metodo temporizadorSegundos.
+                temporizadorSegundos();
+            }
+            else
+                Toast.makeText(getApplicationContext(), "Asegurese de llenar todos los campos", Toast.LENGTH_LONG).show();
         }
         // Comportamiento del boton detener
         else if( view.getId() == R.id.detenerButton ){
