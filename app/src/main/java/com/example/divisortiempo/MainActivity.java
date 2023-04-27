@@ -73,14 +73,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         // Comportamiento del boton detener
         else if( view.getId() == R.id.detenerButton ){
-            // Detendra la reproduccion de la alarma.
-            mediaPlayer.stop();
-            mediaPlayer = MediaPlayer.create(this, R.raw.alarm); // Si al detener la alarma, no se volvia a preparar, ya no volvia a sonar. ****
+            detenerAlarma();
         }
         // Comportamiento del boton reniciar
         else if ( view.getId() == R.id.reiniciarButton) {
-            // Finalizara el timer y reiniciara la app.
+            // Finalizara el timer, detendra la alarma y reiniciara la app.
             finalizarTimers();
+            detenerAlarma();
             reiniciarApp();
         }
     }
@@ -176,8 +175,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // Metodo que se encarga de reproducir el audio de la alarma.
-    private void reproducirAlarma() {
+    public void reproducirAlarma() {
         mediaPlayer.start();
+    }
+
+    // Metodo que se encarga de detener el audio de la alarma.
+    public void detenerAlarma(){
+        mediaPlayer.stop(); // Detendra la reproduccion de la alarma.
+        mediaPlayer = MediaPlayer.create(this, R.raw.alarm); // Si al detener la alarma, no se volvia a preparar, ya no volvia a sonar. ****
     }
 
     // Metodo que se encarga de calcular el tiempo en segundos, de los bloques de tiempo solicitados
