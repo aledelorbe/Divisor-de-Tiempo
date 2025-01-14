@@ -16,6 +16,14 @@ Este proyecto consiste en solicitar al usuario un tiempo (en minutos) y un núme
 - Botón que permite reiniciar la aplicación.
 - Una vez que termine el tiempo de todos los intervalos de tiempo, se mostrará en pantalla que el divisor de tiempo ha concluido.
 
+## Estructura del proyecto:
+
+- `java/com/example/divisortiempo`: Contiene el código fuente de la aplicación en Java.
+- `res/`: Contiene los recursos de la aplicación, organizados en subcarpetas:
+  - `layout/`: Contiene archivos XML que definen la interfaz de usuario.
+  - `raw/`: Contiene los archivos MP3.
+- `gradle/`: Contiene archivos de configuración de Gradle que definen cómo se construye el proyecto.
+
 ---
 
 # Time Divider (Mobile Application)
@@ -35,6 +43,15 @@ This project consists of asking the user for a time (in minutes) and a number of
 - If the user tries to run another time divider while one is already running, a notification will inform the user that this will not be possible unless the app is restarted.
 - A button is available to restart the application.
 - Once the time for all intervals has ended, the screen will display a message indicating that the time divider has completed.
+
+## Project structure:
+
+- `java/com/example/divisortiempo`: Contains the application's source code in Java.
+- `res/`: Contains the application's resources, organized into subfolders:
+  - `layout/`: Contains XML files that define the user interface.
+  - `raw/`: Contains MP3 files.
+- `gradle/`: Contains Gradle configuration files that define how the project is built.
+
 
 
 
